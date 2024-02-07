@@ -20,17 +20,17 @@ router.post('/', async (req, res) => {
 
 router.get('/:cid', async (req, res) => {
     try {
-      
+     
         const { cid } = req.params
         
         const filterById =  await cartManager.getCartByID(cid)
         if (!filterById) {
             return res.status(404).json({ error: 'El carrito con el ID buscado no existe.'})
         } else {
-           
+          
             const subtotal = filterById.products.map(product => product.quantity * product.product.price)
 
- 
+          
             const total = subtotal.reduce((acc, subtotal) => acc + subtotal, 0)
             res.render ('cart', { 
                 filterById,

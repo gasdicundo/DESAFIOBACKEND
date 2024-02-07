@@ -17,7 +17,7 @@ const productsSchema = new mongoose.Schema({
     category: String,
 })
 
-
+//ponemos el plugin de Paginacion
 productsSchema.plugin(mongoosePaginate)
 const Products = mongoose.model(productsCollection, productsSchema)
 

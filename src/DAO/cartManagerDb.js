@@ -12,7 +12,7 @@ class CartManager {
               products : []
             }
   
-          
+    
             await Carts.create(newCart)
             return { success: true, message: 'Carrito creado correctamente' }
    
@@ -34,26 +34,26 @@ class CartManager {
     
 async addProductInCart(cid, pid) {
     try {
- 
+
         const cart = await Carts.findById(cid)
 
         if (cart) {
-            
+           
             const product = await productManager.getProductByID(pid)
 
             if (product) {
-               
+            
                 const productIndex = cart.products.findIndex(prod => prod.product.toString() === pid.toString())
 
                 if (productIndex !== -1) {
                     
                     cart.products[productIndex].quantity++
                 } else {
-                  
+                
                     cart.products.push({ product: new mongoose.Types.ObjectId(pid), quantity: 1 })
                 }
 
-                
+    
                 await cart.save()
                 console.log('Producto agregado al carrito con éxito')
                 return { success: true, message: 'Producto agregado correctamente al carrito' }
@@ -73,11 +73,11 @@ async addProductInCart(cid, pid) {
 
   async  updateCart(cid, updatedProducts) {
     try {
-  
+ 
         const cart = await Carts.findById(cid)
 
         if (cart) {
-            
+  
             updatedProducts.forEach(updatedProduct => {
                 const existingProduct = cart.products.find(product => product.product.equals(updatedProduct.productId))
 
@@ -86,11 +86,11 @@ async addProductInCart(cid, pid) {
                 }
             })
 
-          
+ 
             await cart.save()
             
-            console.log('Se actualizaron correctamente los productos en el carrito')
-            return { success: true, message: 'Se actualizaron correctamente los productos en el carrito' }
+            console.log('Productos actualizados correctamente en el carrito')
+            return { success: true, message: 'Productos actualizados correctamente en el carrito' }
         } else {
             console.log('El carrito no existe en la base de datos')
             return { success: false, message: 'Carrito no encontrado.' }
@@ -110,13 +110,13 @@ async addProductInCart(cid, pid) {
             const productIndex = cart.products.findIndex(prod => prod.product.toString() === pid.toString())
 
             if (productIndex !== -1) {
-        
+             
                 cart.products[productIndex].quantity = quantity
 
-  
+         
                 await cart.save()
-                console.log('Producto actualizado con éxito')
-                return { success: true, message: 'Producto actualizado con éxito' }
+                console.log('Cantidad de producto actualizada con éxito')
+                return { success: true, message: 'Cantidad de producto actualizada correctamente' }
             } else {
                 console.log('El producto no está en el carrito')
                 return { success: false, message: 'El producto no está en el carrito.' }
@@ -134,18 +134,17 @@ async addProductInCart(cid, pid) {
 
     async deleteProductInCart(cid, pid) {
         try {
-     
+          
             const cart = await Carts.findById(cid)
 
             if (cart) {
-                
+               
                 const productIndex = cart.products.findIndex(prod => prod.product.toString() === pid.toString())
 
                 if (productIndex !== -1) {
-                    
+                 
                     cart.products.splice(productIndex, 1)
 
-                    
                     await cart.save()
                     console.log('Producto eliminado del carrito con éxito')
                     return { success: true, message: 'Producto eliminado correctamente del carrito' }
@@ -165,15 +164,14 @@ async addProductInCart(cid, pid) {
         
   async deleteProductsInCart(cid) {
     try {
-    
-        
+   
         const cart = await Carts.findById(cid)
 
         if (cart) {
 
             cart.products = []
 
-           
+  
             await cart.save()
             console.log('Productos eliminados del carrito con éxito')
             return { success: true, message: 'Productos eliminados correctamente del carrito' }
@@ -189,5 +187,7 @@ async addProductInCart(cid, pid) {
 }
 
 module.exports = CartManager
+
+
 
 

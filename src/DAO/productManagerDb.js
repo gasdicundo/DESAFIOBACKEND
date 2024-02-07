@@ -16,13 +16,13 @@ class ProductManagerDb {
     async addProduct(product) {
       try {
           const { title, description, price, thumbnail, code, stock, status, category } = product
-          
+          //Valido que todos los campos son obligatorios
           if (!title || !description || !price || !code || !stock || !category) {
             console.error ("Todos los campos son obligatorios. Producto no agregado.")
             return { success: false, message: "Todos los campos son obligatorios. Producto no agregado." }
           }
 
-          
+    
           const codeExist = await Products.findOne({ code: code})
           if (codeExist) {
             console.error (`El producto con code: ${code} ya existe. Por favor, seleccione otro.`)
@@ -40,10 +40,10 @@ class ProductManagerDb {
             category
           }
 
-         
+      
           await Products.create(newProduct)
 
-
+          
           return { success: true }
 
       } catch (error) {
@@ -54,7 +54,7 @@ class ProductManagerDb {
 
     async updateProduct(productUpdated) {
         try {
-          
+         
           const result = await Products.findOneAndUpdate( {_id: productUpdated.id}, productUpdated )
           console.log (result)
           if (!productUpdated.id) {
@@ -70,7 +70,7 @@ class ProductManagerDb {
 
     async deleteProduct(id) {
       try {
-      
+             
         const idExist = await Products.updateOne({ _id: id }, { $set: { status: false } })
         if (idExist) {
           console.log("Producto borrado correctamente")}
