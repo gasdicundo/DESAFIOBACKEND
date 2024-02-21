@@ -56,7 +56,6 @@ router.get('/:pid', async (req, res) => {
 try {
  
     const { pid } = req.params
-    //realizo una busqueda por id
     const filterById =  await productManager.getProductByID(pid)
     if (!filterById) {
         return res.status(404).json({ error: 'El producto con el id buscado no existe.'})

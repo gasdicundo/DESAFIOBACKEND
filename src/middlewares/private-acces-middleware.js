@@ -1,11 +1,14 @@
-function authMiddleware (req, res, next) {
+function authMiddleware(req, res, next) {
     try {
-        if (req.session.user) return next ()
-        res.redirect('/login')
+        if (req.session.user) {
+            return next();
+        } else {
+            res.redirect('/login');
+        }
     } catch (error) {
-        console.error ('Error:', error.message)
-        res.status(401).json({ error: error })
+        console.error('Error en el middleware de autenticación:', error.message);
+        res.status(401).json({ error: 'Error de autenticación' });
     }
 }
 
-module.exports = authMiddleware
+module.exports = authMiddleware;

@@ -1,12 +1,12 @@
-const mongoose = require ('mongoose')
+const mongoose = require('mongoose');
 
-const messageCollection = 'message'
+const collectionName = 'messages';
 
 const messageSchema = new mongoose.Schema({
-    user: String,
-    message: String,
-})
+    sender: String,
+    content: String
+});
 
-const Messages = mongoose.model(messageCollection, messageSchema)
+const MessageModel = mongoose.model(collectionName, messageSchema);
 
-module.exports = Messages
+module.exports = MessageModel;

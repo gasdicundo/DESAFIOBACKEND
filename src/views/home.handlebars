@@ -1,39 +1,46 @@
-
-<h1>Bienvenido {{user.first_name}}</h1>
-
+<div class="welcome-section">
+    {{#if user.first_name }}
+        <h1>Bienvenido, {{user.first_name}}</h1>
+    {{else}}
+        <h1>Bienvenido</h1>
+        <p class="login-reminder">Inicia sesión para realizar una compra.</p>
+    {{/if}}
+</div>
 
 <main>
     <section>
-        <div class='contenedorProducto'> 
+        <div class='product-container'> 
         {{#each products}}
-            <div class="card" >
+            <div class="product-card" >
                 <picture>
-                <img src="/img/{{thumbnail}}" class="card-img-top" alt={{title}}/>
+                    <img src="/img/{{thumbnail}}" class="product-img" alt={{title}}/>
                 </picture>
-                <div class="card-body">
-                    <h3 class="card-title">{{title}}</h3>
-                    <p>COD: {{code}}</p>
-                    <p class='precioYCant'> 
-                        Precio:${{price}} Cantidad:{{stock}}
+                <div class="product-details">
+                    <h3 class="product-title">{{title}}</h3>
+                    <p>Código: {{code}}</p>
+                    <p class='price-stock'> 
+                        Precio: ${{price}} | Cantidad: {{stock}}
                     </p>
                 </div>
-                <button class="botonAgregarCarrito btn btn2" data-pid="{{_id}}">
-                    Agregar al Carrito
-                </button> 
+                {{#if ../user.first_name}}
+                    <button class="add-to-cart-button btn btn-secondary" data-productid="{{_id}}" data-cartid="{{../user.cart}}">
+                        Agregar al Carrito
+                    </button> 
+                {{/if}}
             </div>
         {{/each}}
         </div>
-        <div class="botonesPage">
+        <div class="pagination-buttons">
             {{#if hasPrevPage}}
-                <a href="products?page={{prevPage}}{{#if sort}}&sort={{sort}}{{/if}}{{#if limit}}&limit={{limit}}{{/if}}{{#if category}}&category={{category}}{{/if}}"><button class="btn btn2">Anterior</button></a>
+                <a href="products?page={{prevPage}}{{#if sort}}&sort={{sort}}{{/if}}{{#if limit}}&limit={{limit}}{{/if}}{{#if category}}&category={{category}}{{/if}}"><button class="pagination-button btn btn-secondary">Anterior</button></a>
             {{/if}}
             {{#if hasNextPage}}
-                <a href="products?page={{nextPage}}{{#if sort}}&sort={{sort}}{{/if}}{{#if limit}}&limit={{limit}}{{/if}}{{#if category}}&category={{category}}{{/if}}"><button class="btn btn2">Siguiente</button></a>
+                <a href="products?page={{nextPage}}{{#if sort}}&sort={{sort}}{{/if}}{{#if limit}}&limit={{limit}}{{/if}}{{#if category}}&category={{category}}{{/if}}"><button class="pagination-button btn btn-secondary">Siguiente</button></a>
             {{/if}}
         </div>
     </section>
 </main>
 
+<script src="/js/product-page.js"></script>
 
-<script src="/js/products.js"></script>
 

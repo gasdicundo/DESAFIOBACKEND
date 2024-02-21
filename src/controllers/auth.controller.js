@@ -16,6 +16,7 @@ router.post ('/', passport.authenticate('login', {failureRedirect: '/auth/fail-l
             email: lowercaseEmail,
             age: req.user.age,
             role: req.user.role,
+            cart: req.user.cart,
         }
         res.json ({status: 'success', message: 'Login Succesfull'})
      } catch (error) {

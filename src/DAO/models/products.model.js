@@ -1,9 +1,9 @@
-const mongoose = require ('mongoose')
-const mongoosePaginate = require ('mongoose-paginate-v2')
+const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
-const productsCollection = 'product'
+const collectionName = 'products';
 
-const productsSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
     title: String,
     description: String,
     price: Number,
@@ -15,10 +15,10 @@ const productsSchema = new mongoose.Schema({
     stock: Number,
     status: Boolean,
     category: String,
-})
+});
 
-//ponemos el plugin de Paginacion
-productsSchema.plugin(mongoosePaginate)
-const Products = mongoose.model(productsCollection, productsSchema)
+productSchema.plugin(mongoosePaginate);
 
-module.exports = Products
+const ProductModel = mongoose.model(collectionName, productSchema);
+
+module.exports = ProductModel;

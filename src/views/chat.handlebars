@@ -1,17 +1,15 @@
-<h1>CHAT EN VIVO</h1>
+<div class="live-chat">
+    <h1>Chat en vivo</h1>
+    <main>
+        <div class="chat-input">
+            <input type="text" id="chatBox">
+        </div>
+        <div class="message-logs">
+            <p id="messageLogs"></p>
+        </div>
+    </main>
+</div>
 
-<main>
-    <div>
-      <input type="text" id="chatBox">
-    </div>
-    <div>
-      <p id="messageLogs"></p>
-    </div>
-</main>
-
-{{!--cdn de sweet alert--}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-{{!-- Para tener disponible el socket.io --}}
 <script src="/socket.io/socket.io.js"></script>
- {{!-- Armo el socket.io para el cliente --}}
-<script src="/js/chat.js"></script>
+<script src="/js/live-chat.js"></script>
