@@ -1,54 +1,52 @@
 const { Router } = require('express')
-const Users = require('../DAO/models/user.model')
 const router = Router()
-const passport = require ('passport')
+const security = require('passport')
+const UserServices = require('../services/user-services')
 
-router.post ('/', passport.authenticate('register', {failureRedirect: '/api/users/fail-Register'}),  async (req, res) => {
+router.get('/user-basket', async (req, res) => {
     try {
-        res.status(201).json ({status: 'success', messae: 'Usuario' })
-     } catch (error) {
-        console.error ('Error:', error.message)
+        const basketId = req.session.basket
+        if (!basketId) {
+            const userId = req.user._id
+            const userBasket = await UserServices.fetchUserBasket(userId)
+            if (!userBasket) {
+                return res.status(404).json({ error: 'User or basket not found' })
+            }
+            req.session.basket = userBasket
+            console.log('User basket ID:', userBasket)
+            res.status(200).json({ status: 'success', basketId: userBasket })
+        }
+    } catch (error) {
+        console.error('Error updating user basket:', error.message)
         res.status(500).json({ error: 'Internal Server Error' })
     }
 })
 
-router.get ('/fail-Register', (req, res) => {
-    console.log ('Fallo registro')
-    res.status(400).json({status: 'error',  error: 'bad Request' })
+router.post('/', security.authenticate('register', { failureRedirect: '/api/users/failed-registration' }), async (req, res) => {
+    try {
+        res.status(201).json({ status: 'success', message: 'User successfully registered' })
+    } catch (error) {
+        console.error('Error:', error.message)
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+})
+
+router.get('/failed-registration', (req, res) => {
+    console.log('Registration failed')
+    res.status(400).json({ status: 'error', error: 'Bad Request' })
 })
 
 router.put('/', async (req, res) => {
     try {
-        const { _id: userId } = req.user;
-        const { cart: cartId } = req.body;
-      
-        await Users.updateOne({ _id: userId }, { cart: cartId });
-      
-        req.session.user.cart = cartId;
-         
-        res.status(200).json({ status: 'updated', message: 'Cart successfully updated' });
+        const userId = req.user._id
+        const { basket: basketId } = req.body
+        await UserServices.updateUserBasket(userId, basketId)
+        req.session.user.basket = basketId
+        res.status(200).json({ status: 'success', message: 'User basket updated successfully' })
     } catch (error) {
-        console.error('Failed to update user cart:', error.message);
-        res.status(500).json({ error: 'Server Error' });
+        console.error('Error updating user basket:', error.message)
+        res.status(500).json({ error: 'Internal Server Error' })
     }
-});
-
-router.get('/user-cart', async (req, res) => {
-    try {
-        const { cart: cartId } = req.session;
-        if (!cartId) {
-            const { _id: userId } = req.user;
-            const user = await Users.findOne({ _id: userId }).exec();
-            const newCartId = user.cart;
-
-            req.session.cart = newCartId;
-            console.log('Retrieved cart id:', newCartId);
-            res.status(200).json({ status: 'success', cartId: newCartId });
-        }
-    } catch (error) {
-        console.error('Failed to retrieve user cart:', error.message);
-        res.status(500).json({ error: 'Server Error' });
-    }
-});
+})
 
 module.exports = router
