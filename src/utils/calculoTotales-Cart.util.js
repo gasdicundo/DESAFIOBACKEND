@@ -1,9 +1,15 @@
 const calculateSubtotalAndTotal = (products) => {
-    const subtotals = products.map(product => product.quantity * product.product.price);
-    const subtotal = subtotals.reduce((acc, subtotal) => acc + subtotal, 0);
-    const total = subtotals.reduce((acc, subtotal) => acc + subtotal, 0);
+    if (!products || products.length === 0) {
+        return { subtotal: 0, total: 0 };
+    }
+
+    let subtotal = 0;
+    products.forEach(product => {
+        subtotal += product.quantity * product.product.price;
+    });
+    const total = subtotal;
+
     return { subtotal, total };
 };
 
 module.exports = calculateSubtotalAndTotal;
-

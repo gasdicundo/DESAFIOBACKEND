@@ -1,6 +1,6 @@
-const ProductModel = require('../DAO/models/products.model');
+const Products = require('../DAO/models/products.model');
 
-async function fetchProducts({ limit = 10, page = 1, sort, category, stock }) {
+async function getProducts({ limit = 10, page = 1, sort, category, stock }) {
     const limitValue = limit ? parseInt(limit) : 10;
 
     const query = {
@@ -18,7 +18,7 @@ async function fetchProducts({ limit = 10, page = 1, sort, category, stock }) {
         sort: sort === 'desc' ? { price: -1 } : sort === 'asc' ? { price: 1 } : undefined
     };
 
-    return await ProductModel.paginate(query, options);
+    return await Products.paginate(query, options);
 }
 
-module.exports = { fetchProducts };
+module.exports = { getProducts };

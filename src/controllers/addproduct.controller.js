@@ -1,13 +1,18 @@
-const { Router } = require('express')
-const router = Router()
+const { Router } = require('express');
+const router = Router();
+const authorizationMiddleware = require('../middlewares/authorization-middleware');
 
-router.get('/', async (req, res) => {
+router.get('/', authorizationMiddleware('admin'), async (req, res) => {
     try {
-     res.render ('addProduct', {style:'style.css'})   
+        const { user } = req.session;
+        res.render('addProduct', {
+            user,
+            style: 'style.css',
+        });
     } catch (error) {
-        console.error ('Error al obtener los products:', error.message)
-        res.status(500).json({ error: 'Internal Server Error' })
+        console.error('Error al obtener los productos:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-})
+});
 
-module.exports = router
+module.exports = router;

@@ -3,6 +3,7 @@ const Users = require('../DAO/models/user.model')
 const { createHash } = require('../utils/cryp-password.util')
 const passport = require('passport')
 const router = Router()
+const UserDTO = require ('../DTO/sensible-user')
 
 
 router.post ('/', passport.authenticate('login', {failureRedirect: '/auth/fail-login'}) , async (req, res) => {
@@ -65,5 +66,15 @@ router.get('/githubcallback', passport.authenticate('github', {failureRedirect: 
     res.redirect('/profile')
     }
 )
+
+router.get('/current', (req, res) => {
+    if (req.isAuthenticated()) {
+        const currentUserDTO = new UserDTO(req.user);
+        res.json({ message: currentUserDTO });
+    } else {
+        res.status(401).json({ status: 'error', message: 'User authentication failed' });
+    }
+});
+
 
 module.exports = router

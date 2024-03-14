@@ -16,6 +16,16 @@ class UserDAO {
             throw new Error('Failed to update user shopping cart in the database');
         }
     }
+
+    async createUser(newUserDto){
+        try {
+            const createdUser = await Users.create(newUserDto)
+            return createdUser
+        } catch (error) {
+            throw new Error('Error al crear un nuevo usuario en la base de datos')
+        }
+    }
+    
 }
 
 module.exports = UserDAO;

@@ -9,5 +9,8 @@ module.exports = {
     githubClientId: process.env.GITHUB_CLIENT_ID,
     githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
     jwtSecret: process.env.JWT_SECRET,
+    userEmail: process.env.USER_EMAIL, 
+    userPassword: process.env.USER_PASSWORD,
+    PortMailer: process.env.PORT_MAILER,
 };
 
